@@ -2,6 +2,8 @@ import speech_recognition as sr
 import pyttsx3
 import pyaudio
 import os
+import edge_tts 
+from edge_tts import VoicesManager
 
 
 class speechDetector:
@@ -13,10 +15,8 @@ class speechDetector:
             if list_device["maxInputChannels"] >= 1:
                 print("Microfono ",  list_device["index"] , " " , list_device["name"])
 
-    def speech_configurator(index,output):
-        print(index)
-        print(output)
-
+    def text_to_speech(text):
+        comunicate = edge_tts.Communicate(text,voice="es")
     def speech_usage(input_device):
         queue_speech = []
         #Inicializador de speech_recognition
@@ -30,16 +30,14 @@ class speechDetector:
                 if "exit" in r.recognize_google(audio).lower():
                     print("Exiting...")
                     break
+                
                 speechDetector.text_to_speech(r.recognize_google(audio))
             except sr.UnknownValueError:
                 print("Google Speech Recognition could not undestrand audio")
             except sr.RequestError as e:
                 print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
-    def text_to_speech(text):
-        engine = pyttsx3.init()
-        engine.say(text.lower())
-        engine.runAndWait()
+
 
         
             
