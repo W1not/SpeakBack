@@ -2,8 +2,8 @@ import speechinput as sp
 
 if __name__ == "__main__":
     sp.speechDetector.speech_search()
-    index = int(input("Index "))
-    output = int(input("Output "))
+    input_device = int(input("Index "))
+    output_device = int(input("Output "))
 
-    sp.speechDetector.speech_configurator(index,output)
-    sp.speechDetector.speech_usage()
+    sp.speechDetector.speech_configurator(input_device,output_device)
+    sp.speechDetector.speech_usage(input_device)

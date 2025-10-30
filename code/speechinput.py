@@ -1,4 +1,5 @@
 import speech_recognition as sr
+import pyttsx3
 import pyaudio
 import os
 
@@ -14,18 +15,28 @@ class speechDetector:
         print(index)
         print(output)
 
-    def speech_usage():
+    def speech_usage(input_device):
         r = sr.Recognizer()
-        with sr.Microphone as source:
-            print("Say something: ")
-            audio = r.listen(source)
+        while True:
+            with sr.Microphone(device_index=input_device) as source:
+                print("Say something: ")
+                audio = r.listen(source)
+            try:
+                print("Google Speech Recognition thinks you said " + r.recognize_google(audio))
+                if "exit" in r.recognize_google(audio).lower():
+                    print("Exiting...")
+                    break
+                speechDetector.text_to_speech(r.recognize_google(audio))
+            except sr.UnknownValueError:
+                print("Google Speech Recognition could not undestrand audio")
+            except sr.RequestError as e:
+                print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
-        try:
-            r = sr.AudioSource()
-        except sr.UnknownValueError:
-            print("Sphinx could not understand audio")
-        except sr.RequestError as e:
-            print("Sphinx error; {0}".format(e))
+
+    def text_to_speech(text):
+        engine = pyttsx3.init()
+        engine.say(text)
+        engine.runAndWait()
 
         
             
