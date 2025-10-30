@@ -3,7 +3,9 @@ import pyttsx3
 import pyaudio
 import os
 
+
 class speechDetector:
+    #Make a list of input devices
     def speech_search():
         p = pyaudio.PyAudio()
         for i in range(p.get_device_count()):
@@ -16,6 +18,8 @@ class speechDetector:
         print(output)
 
     def speech_usage(input_device):
+        queue_speech = []
+        #Inicializador de speech_recognition
         r = sr.Recognizer()
         while True:
             with sr.Microphone(device_index=input_device) as source:
@@ -32,10 +36,9 @@ class speechDetector:
             except sr.RequestError as e:
                 print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
-
     def text_to_speech(text):
         engine = pyttsx3.init()
-        engine.say(text)
+        engine.say(text.lower())
         engine.runAndWait()
 
         
