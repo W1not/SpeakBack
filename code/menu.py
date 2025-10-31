@@ -12,6 +12,10 @@ class GUI:
         label = tk.Label(root, text="Say exit to finish recognition")
         label.pack()
 
+        label2 = tk.Label(root, text="Press Start to begin")
+        label2.pack()
+
+
         start_speech_button = tk.Button(root, text="Start", command=GUI.speech_start)
         start_speech_button.pack()
         root.mainloop()
