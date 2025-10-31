@@ -16,7 +16,9 @@ class GUI:
 
     def speech_start(self):
         """Hilo separado de reconocimiento"""
-        tts_program = threading.Thread(target=si.speechDetector.speech_usage, args=(1,))
+        detector = si.speechDetector(input_device_index=1)
+
+        tts_program = threading.Thread(target=detector.run)
         tts_program.daemon = True
         tts_program.start()
         self.label.config(text="Speech recognition started...")
