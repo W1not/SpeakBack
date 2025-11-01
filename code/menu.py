@@ -1,17 +1,31 @@
 import tkinter as tk
+import threading
 import speechinput as si
 
 class GUI:
-    def speech_start():
-        si.speechDetector.speech_usage(1)
+    def __init__(self):
+        self.root = tk.Tk()
+        self.root.title("Speech")
+        self.root.geometry("400x300")
 
-    def visual():
-        root = tk.Tk()
-        root.title("Speech")
-        root.geometry("400x300")
-        label = tk.Label(root, text="Say exit to finish recognition")
-        label.pack()
+        self.label = tk.Label(self.root, text="Say 'exit' to finish recognition")
+        self.label.pack(pady=10)
 
-        start_speech_button = tk.Button(root, text="Start", command=GUI.speech_start)
-        start_speech_button.pack()
-        root.mainloop()
+        self.start_speech_button = tk.Button(self.root, text="Start", command=self.speech_start)
+        self.start_speech_button.pack(pady=10)
+
+    def speech_start(self):
+        """Hilo separado de reconocimiento"""
+        detector = si.speechDetector(input_device_index=1)
+
+        tts_program = threading.Thread(target=detector.run)
+        tts_program.daemon = True
+        tts_program.start()
+        self.label.config(text="Speech recognition started...")
+
+    def run(self):
+        self.root.mainloop()
+
+if __name__ == "__main__":
+    app = GUI()
+    app.run()
